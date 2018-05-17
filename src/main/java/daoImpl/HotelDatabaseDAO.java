@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class HotelDatadaseDAO  implements HotelDAO {
+public class HotelDatabaseDAO implements HotelDAO {
 
 
-    public HotelDatadaseDAO() {
+    public HotelDatabaseDAO() {
     }
 
     @Override
