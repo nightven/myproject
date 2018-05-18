@@ -2,8 +2,8 @@ package dao.daoImpl;
 
 
 import Util.DBUtil;
-import dao.RegionDAO;
-import model.Region;
+import dao.CountryDAO;
+import model.Country;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,14 +12,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class RegionDatabaseDAO implements RegionDAO {
+public class CountryDatabaseDAO implements CountryDAO {
 
 
-    public RegionDatabaseDAO() {
+    public CountryDatabaseDAO() {
     }
 
     @Override
-    public boolean create(Region model) {
+    public boolean create(Country model) {
         String sql = "INSERT INTO region(region) VALUES (?)";
         boolean rowInsert = false;
         try (Connection connection = DBUtil.getDataSource().getConnection();
@@ -33,34 +33,34 @@ public class RegionDatabaseDAO implements RegionDAO {
     }
 
     @Override
-    public Region getById(int id) {
+    public Country getById(int id) {
         String sql = "SELECT * FROM region WHERE id =?";
-        Region region = new Region();
+        Country Country = new Country();
         try (Connection connection = DBUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            region.setId(resultSet.getInt("id"));
-            region.setRegion(resultSet.getString("region"));
+            Country.setId(resultSet.getInt("id"));
+            Country.setRegion(resultSet.getString("Country"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return region;
+        return Country;
     }
 
     @Override
-    public Collection<Region> getAll() {
-        Collection<Region> regionsList = new ArrayList<>();
+    public Collection<Country> getAll() {
+        Collection<Country> regionsList = new ArrayList<>();
         String sql = "SELECT * FROM region";
         try (Connection connection = DBUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Region region = new Region();
-                region.setId(resultSet.getInt("id"));
-                region.setRegion(resultSet.getString("region"));
-                regionsList.add(region);
+                Country Country = new Country();
+                Country.setId(resultSet.getInt("id"));
+                Country.setRegion(resultSet.getString("Country"));
+                regionsList.add(Country);
             }
 
         } catch (SQLException e) {
@@ -70,7 +70,7 @@ public class RegionDatabaseDAO implements RegionDAO {
     }
 
     @Override
-    public boolean update(Region model) {
+    public boolean update(Country model) {
         String sql = "UPDATE region SET region =? WHERE id =?";
         boolean rowUpdate = false;
         try (Connection connection = DBUtil.getDataSource().getConnection();
@@ -85,7 +85,7 @@ public class RegionDatabaseDAO implements RegionDAO {
     }
 
     @Override
-    public boolean delete(Region model) {
+    public boolean delete(Country model) {
         String sql = "DELETE FROM region WHERE id=?";
         boolean rowUpdate = false;
         try (Connection connection = DBUtil.getDataSource().getConnection();

@@ -1,19 +1,19 @@
 package model;
 
 import java.sql.Date;
+import java.util.List;
 
 public class User extends Model {
-
     private String login;
-    private String userName;
-    private String userLastName;
-    private String emailUser;
+    private String name;
+    private String lastName;
+    private String email;
     private String password;
     private Date createDate;
     private Date userDOB;
+    private int roles;
 
-    private Roles roles;
-    private int roles_id = roles.getId();
+    List<Order> orderList;
 
     public User() {
         super();
@@ -23,29 +23,54 @@ public class User extends Model {
         super(id);
     }
 
-
-    public String getUserName() {
-        return userName;
+    public User(String login, String password){
+        this.login = login;
+        this.password=password;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public User(int id, String login, String name, String lastName, String email,
+                String password, Date createDate, Date userDOB, int roles) {
+        super(id);
+        this.login = login;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.createDate = createDate;
+        this.userDOB = userDOB;
+        this.roles = roles;
     }
 
-    public String getUserLastName() {
-        return userLastName;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUserLastName(String userLastName) {
-        this.userLastName = userLastName;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public String getEmailUser() {
-        return emailUser;
+    public String getName() {
+        return name;
     }
 
-    public void setEmailUser(String emailUser) {
-        this.emailUser = emailUser;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -72,19 +97,19 @@ public class User extends Model {
         this.userDOB = userDOB;
     }
 
-    public String getLogin() {
-        return login;
+    public int getRoles() {
+        return roles;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setRoles(int roles) {
+        this.roles = roles;
     }
 
-    public int getRoles_id() {
-        return roles_id;
+    public List<Order> getOrderList() {
+        return orderList;
     }
 
-    public void setRoles_id(int roles_id) {
-        this.roles_id = roles_id;
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 }

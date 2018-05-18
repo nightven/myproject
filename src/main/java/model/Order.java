@@ -1,13 +1,20 @@
 package model;
 
+import javax.naming.ldap.PagedResultsControl;
 import java.sql.Date;
 
 public class Order extends Model {
-    private User user;
-    private Tours tours;
-    private int user_id = user.getId();
-    private int tours_d = tours.getId();
-    private Date createDate;
+    private int userId;
+    String userEmail;
+
+    private int toursId;
+    private String toursName;
+    private int flyId;
+    private double priceFly;
+    private int hotelId;
+    private double priceHotel;
+
+
 
     public Order() {
         super();
@@ -17,29 +24,79 @@ public class Order extends Model {
         super(id);
     }
 
-    public int getUser_id() {
-        return user_id;
+    public Order(int id, int userId, String userEmail, int toursId, String toursName, int flyId, double priceFly, int hotelId, double priceHotel) {
+        super(id);
+        this.userId = userId;
+        this.userEmail = userEmail;
+        this.toursId = toursId;
+        this.toursName = toursName;
+        this.flyId = flyId;
+        this.priceFly = priceFly;
+        this.hotelId = hotelId;
+        this.priceHotel = priceHotel;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public int getTours_d() {
-        return tours_d;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public void setTours_id(int tours_d) {
-        this.tours_d = tours_d;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public int getToursId() {
+        return toursId;
     }
 
+    public void setToursId(int toursId) {
+        this.toursId = toursId;
+    }
 
+    public String getToursName() {
+        return toursName;
+    }
+
+    public void setToursName(String toursName) {
+        this.toursName = toursName;
+    }
+
+    public int getFlyId() {
+        return flyId;
+    }
+
+    public void setFlyId(int flyId) {
+        this.flyId = flyId;
+    }
+
+    public double getPriceFly() {
+        return priceFly;
+    }
+
+    public void setPriceFly(double priceFly) {
+        this.priceFly = priceFly;
+    }
+
+    public int getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
+    }
+
+    public double getPriceHotel() {
+        return priceHotel;
+    }
+
+    public void setPriceHotel(double priceHotel) {
+        this.priceHotel = priceHotel;
+    }
 }

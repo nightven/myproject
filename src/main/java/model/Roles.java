@@ -2,7 +2,7 @@ package model;
 
 public class Roles extends Model {
 
-    private int access; //1 = admin, 2= manager, 3 = user.
+    private int access; //1 = admin, 2= user,
 
     public Roles() {
         super();
@@ -12,6 +12,10 @@ public class Roles extends Model {
         super(id);
     }
 
+    public Roles(int id, int access) {
+        super(id);
+        this.access = access;
+    }
 
     public int getAccess() {
         return access;
