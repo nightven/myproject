@@ -7,7 +7,7 @@ import model.Roles;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class RolesDatabaseDAO implements RolesDAO {
 
@@ -48,8 +48,8 @@ public class RolesDatabaseDAO implements RolesDAO {
         return roles;
     }
 
-    public Collection<Roles> getAll() {
-        Collection<Roles> rolesList = new ArrayList<>();
+    public List<Roles> getAll() {
+        List<Roles> rolesList = new ArrayList<>();
         String sql = "SELECT * FROM roles";
         try (Connection connection = DBUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
