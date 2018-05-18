@@ -1,4 +1,4 @@
-package daoImpl;
+package dao.daoImpl;
 
 import Util.DBUtil;
 import dao.UserDAO;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDatabaseDAO extends DBUtil implements UserDAO {
-        Roles roles;
+    Roles roles;
 
     public UserDatabaseDAO() {
     }
@@ -60,6 +60,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
         boolean rowUpdate = false;
         try (Connection connection = DBUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(8, model.getId());
             preparedStatement.setString(1, model.getLogin());
             preparedStatement.setString(2, model.getUserName());
             preparedStatement.setString(3, model.getUserLastName());
@@ -111,7 +112,6 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 User user = new User();
-                Roles roles = new Roles();
                 user.setId(resultSet.getInt("user_id"));
                 user.setLogin(resultSet.getString("login"));
                 user.setUserName(resultSet.getString("name"));
@@ -120,7 +120,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
                 user.setPassword(resultSet.getString("password"));
                 user.setCreateDate(resultSet.getDate("create_date"));
                 user.setUserDOB(resultSet.getDate("user_dob"));
-                roles.setId(resultSet.getInt("roles_id"));
+                user.setRoles_id(resultSet.getInt("roles_id"));
 
                 userList.add(user);
             }

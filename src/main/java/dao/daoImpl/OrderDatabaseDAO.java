@@ -1,4 +1,4 @@
-package daoImpl;
+package dao.daoImpl;
 
 
 import Util.DBUtil;
@@ -14,9 +14,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class OrderDatabaseDAO  implements OrderDAO {
+public class OrderDatabaseDAO implements OrderDAO {
     Tours tours;
     User user;
+
     public OrderDatabaseDAO() {
 
     }
@@ -28,14 +29,14 @@ public class OrderDatabaseDAO  implements OrderDAO {
         boolean rowInsert = false;
 
 
-                try(Connection connection = DBUtil.getDataSource().getConnection();
-                    PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                    preparedStatement.setInt(1, user.getId());
-                    preparedStatement.setInt(2, tours.getId());
-                    rowInsert = preparedStatement.executeUpdate() > 0;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        try (Connection connection = DBUtil.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setInt(2, tours.getId());
+            rowInsert = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return rowInsert;
 
     }
@@ -44,9 +45,9 @@ public class OrderDatabaseDAO  implements OrderDAO {
     public Order getById(int id) {
         String sql = "SELECT * FROM order WHERE order_id = ?";
         Order order = new Order();
-        try(Connection connection = DBUtil.getDataSource().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1,id);
+        try (Connection connection = DBUtil.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             order.setId(resultSet.getInt("order_id"));
@@ -61,13 +62,13 @@ public class OrderDatabaseDAO  implements OrderDAO {
 
     @Override
     public Collection<Order> getAll() {
-        String sql = "";
-        Collection<Order>orderList = new ArrayList<>();
-        try(Connection connection = DBUtil.getDataSource().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        String sql = "SELECT * FROM 'order'";
+        Collection<Order> orderList = new ArrayList<>();
+        try (Connection connection = DBUtil.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                Order order  = new Order();
+            while (resultSet.next()) {
+                Order order = new Order();
                 order.setId(resultSet.getInt("order_id"));
                 order.setUser_id(resultSet.getInt("user_id"));
                 order.setTours_id(resultSet.getInt("tours_id"));
@@ -82,17 +83,17 @@ public class OrderDatabaseDAO  implements OrderDAO {
 
     @Override
     public boolean update(Order model) {
-        String sql ="UPDATE order SET" +
+        String sql = "UPDATE order SET" +
                 " user_id = ?," +
                 " tours_id= ? " +
                 "WHERE order_id = ?";
         boolean rowUpdate = false;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(3,model.getId());
-            preparedStatement.setInt(1,user.getId());
+        try (Connection connection = DBUtil.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(3, model.getId());
+            preparedStatement.setInt(1, user.getId());
             preparedStatement.setInt(2, tours.getId());
-            rowUpdate = preparedStatement.executeUpdate() >0;
+            rowUpdate = preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,16 +105,15 @@ public class OrderDatabaseDAO  implements OrderDAO {
     public boolean delete(Order model) {
         String sql = "DELETE FROM `order` WHERE order_id =?";
         boolean rowUpdate = false;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1,model.getId());
+        try (Connection connection = DBUtil.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, model.getId());
             rowUpdate = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return rowUpdate;
     }
-
 
 
 }

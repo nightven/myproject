@@ -2,7 +2,7 @@ package model;
 
 public class Region extends Model {
 
-    private int region;
+    private String region;
 
     public Region() {
         super();
@@ -13,13 +13,11 @@ public class Region extends Model {
     }
 
 
-    public int getRegion() {
+    public String getRegion() {
         return region;
     }
 
-    public void setRegion(int region) {
+    public void setRegion(String region) {
         this.region = region;
     }
-
-
 }

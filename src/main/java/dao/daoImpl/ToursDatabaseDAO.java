@@ -1,10 +1,11 @@
-package daoImpl;
+package dao.daoImpl;
 
 
 import Util.DBUtil;
 import dao.ToursDAO;
 import model.Fly;
 import model.Hotel;
+import model.Region;
 import model.Tours;
 
 import java.sql.Connection;
@@ -14,9 +15,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ToursDatabaseDAO  implements ToursDAO {
-        Fly fly;
-        Hotel hotel;
+public class ToursDatabaseDAO implements ToursDAO {
+    Fly fly;
+    Hotel hotel;
+    Region region;
+
     public ToursDatabaseDAO() {
     }
 
@@ -34,16 +37,16 @@ public class ToursDatabaseDAO  implements ToursDAO {
         boolean rowInsert = false;
 
         try (Connection connection = DBUtil.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-           preparedStatement.setString(1,model.getNameTour());
-           preparedStatement.setString(2,model.getDescription());
-           preparedStatement.setDate(3,model.getDetaTour());
-           preparedStatement.setDouble(4, model.getCostTour());
-           preparedStatement.setInt(5, model.getHotel_id());
-           preparedStatement.setInt(6, model.getFly_id());
-           preparedStatement.setInt(7, model.getRegion_id());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, model.getNameTour());
+            preparedStatement.setString(2, model.getDescription());
+            preparedStatement.setDate(3, model.getDetaTour());
+            preparedStatement.setDouble(4, model.getCostTour());
+            preparedStatement.setInt(5, hotel.getId());
+            preparedStatement.setInt(6, fly.getId());
+            preparedStatement.setInt(7, region.getId());
 
-           rowInsert = preparedStatement.executeUpdate() > 0;
+            rowInsert = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,14 +55,13 @@ public class ToursDatabaseDAO  implements ToursDAO {
     }
 
 
-
     @Override
     public Tours getById(int id) {
         String sql = "SELECT * FROM tours where id =?";
         Tours tours = new Tours();
-        try(Connection connection = DBUtil.getDataSource().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1,id);
+        try (Connection connection = DBUtil.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             tours.setId(resultSet.getInt("id"));
             tours.setNameTour(resultSet.getString("name"));
@@ -79,12 +81,12 @@ public class ToursDatabaseDAO  implements ToursDAO {
 
     @Override
     public Collection<Tours> getAll() {
-        Collection<Tours>toursList = new ArrayList<>();
+        Collection<Tours> toursList = new ArrayList<>();
         String sql = "SELECT * FROM tours";
-        try(Connection connection = DBUtil.getDataSource().getConnection();
-            PreparedStatement preparedStatement =connection.prepareStatement(sql) ) {
+        try (Connection connection = DBUtil.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Tours tours = new Tours();
                 tours.setId(resultSet.getInt("id"));
                 tours.setNameTour(resultSet.getString("name"));
@@ -113,17 +115,17 @@ public class ToursDatabaseDAO  implements ToursDAO {
                 "fly_id=?, " +
                 "region_id=? " +
                 "WHERE id = ?";
-        boolean rowUpdate =false;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(8,model.getId());
-            preparedStatement.setString(1,model.getNameTour());
-            preparedStatement.setString(2,model.getDescription());
-            preparedStatement.setDate(3,model.getDetaTour());
+        boolean rowUpdate = false;
+        try (Connection connection = DBUtil.getDataSource().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(8, model.getId());
+            preparedStatement.setString(1, model.getNameTour());
+            preparedStatement.setString(2, model.getDescription());
+            preparedStatement.setDate(3, model.getDetaTour());
             preparedStatement.setDouble(4, model.getCostTour());
-            preparedStatement.setInt(5, model.getHotel_id());
-            preparedStatement.setInt(6, model.getFly_id());
-            preparedStatement.setInt(7, model.getRegion_id());
+            preparedStatement.setInt(5, hotel.getId());
+            preparedStatement.setInt(6, fly.getId());
+            preparedStatement.setInt(7, region.getId());
             rowUpdate = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,7 +138,7 @@ public class ToursDatabaseDAO  implements ToursDAO {
         String sql = "DELETE FROM tours where id = ?";
         boolean rowDelete = false;
         try (Connection connection = DBUtil.getDataSource().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, model.getId());
             rowDelete = preparedStatement.executeUpdate() > 0;    // помоему тут не верное значение получаем?
         } catch (SQLException e) {
