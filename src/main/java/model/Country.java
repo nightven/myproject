@@ -15,12 +15,13 @@ public class Country extends Model {
     }
 
 
-    public Country(int id, int id1, String cityName, String country) {
+    public Country(int id, String cityName, String country) {
         super(id);
-        this.id = id1;
         this.cityName = cityName;
         this.country = country;
     }
+
+
 
     @Override
     public int getId() {
