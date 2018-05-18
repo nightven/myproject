@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- maxActive: Maximum number of database connections in pool. Make sure you
+     configure your mysqld max_connections large enough to handle
+     all of your db connections. Set to -1 for no limit.
+     -->
+
+<!-- validationQuery= "SELECT 1": MySql SQL query used to validate connections
+     from the pool before returning them to the caller
+     -->
+
+<!-- validationInterval: Used to avoid excess validation, only run
+     validation at most at this frequency – time in milliseconds. If a connection
+     is due for validation, but has been validated previously within this interval,
+     it will not be validated again. The larger the value, the better the performance,
+     but you increase the chance of a stale connection being presented to your application.
+     -->
+
+<!-- maxIdle: Maximum number of idle database connections to retain in pool.
+     Set to -1 for no limit.  See also the DBCP documentation on this
+     and the minEvictableIdleTimeMillis configuration parameter.
+     -->
+
+<!-- maxWait: Maximum time to wait for a database connection to become available
+     in ms, in this example 10 seconds. An Exception is thrown if
+     this timeout is exceeded.  Set to -1 to wait indefinitely.
+     -->
+
+<!-- initialSize:  The initial number of connections that are created when the pool is started
+     -->
+
+<!-- jmxEnabled:(boolean) Register the pool with JMX or not. The default value is true.
+     -->
+
+<!-- username and password: MySQL username and password for database connections  -->
+
+<!-- driverClassName: Class name for the old mm.mysql JDBC driver is
+     org.gjt.mm.mysql.Driver - we recommend using Connector/J though.
+     Class name for the official MySQL Connector/J driver is com.mysql.jdbc.Driver.
+     -->
+
+<!-- url: The JDBC connection url for connecting to your MySQL database.
+     -->
+<Context reloadable="true" privileged="true">
+    <Resource name="connpool"
+              auth="Container"
+              type="javax.sql.DataSource"
+              validationQuery="SELECT 1"
+              validationsInterval="30000"
+              maxActive="100"
+              maxIdle="10"
+              maxWait="10000"
+              initialSize="10"
+              jmxEnabled="true"
+              username="root"
+              password="84548454"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/db_travel"/>
+</Context>

@@ -3,11 +3,6 @@ package facades;
 import dao.OrderDAO;
 import dao.ToursDAO;
 import dao.UserDAO;
-import daoImpl.OrderDatabaseDAO;
-import model.Order;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class OrderFacade {
     private UserDAO userDAO;
