@@ -22,7 +22,7 @@ public class HotelDatabaseDAO implements HotelDAO {
         String sql = "INSERT  INTO hotel(" +
                 "hotel_name," +
                 " hotel_adress," +
-                " praice," +
+                " price," +
                 " date_occupancy," +
                 " date_eviction, " +
                 "nights, " +
@@ -88,7 +88,7 @@ public class HotelDatabaseDAO implements HotelDAO {
         String sql = "UPDATE hotel SET " +
                 "hotel_name=?," +
                 "hotel_adress=?," +
-                "praice=?," +
+                "price=?," +
                 " date_occupancy =?," +
                 " date_eviction= ?," +
                 " nights=?," +

@@ -24,15 +24,18 @@ public class OrderFacade {
 //    }
     OrderDatabaseDAO orderDB = new OrderDatabaseDAO();
 
-    public boolean createOrder(Order order){
-        return  orderDB.create(order);
+    public boolean createOrder(int userId){
+        return  orderDB.create(userId);
     }
 
     public  Order getOrderById(int orderId){
-        return orderDB.getById(orderId);
+        return orderDB.getOrderByID(orderId);
     }
 
     public List<Order> getAllOdrders(){
-        return orderDB.getAll();
+        return orderDB.getAllOrders();
+    }
+    public boolean deleteOrder(int orderId){
+        return orderDB.deleteOrder(orderId);
     }
 }
