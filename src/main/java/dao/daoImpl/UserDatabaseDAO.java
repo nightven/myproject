@@ -162,7 +162,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
         User user = null;
         String sql = "SELECT u.user_id, u.login, u.name, u.lastname, u.email, u.password," +
                 " u.create_date, u.user_dob, u.roles_id" +
-                " FROM `order` o JOIN user u on o.user_user_id = u.user_id WHERE o.id =?";
+                " FROM `order` o JOIN user u on o.user_id = u.user_id WHERE o.id =?";
         try(Connection connection = DBUtil.getDataSource().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, orderId);

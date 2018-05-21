@@ -1,18 +1,21 @@
 package model;
 
-import javax.naming.ldap.PagedResultsControl;
-import java.sql.Date;
 
 public class Order extends Model {
+    //required
     private int userId;
-    String userEmail;
-
-    private int toursId;
-    private String toursName;
+    private String userMail;
+    //optional
+    private int tourId;
+    private String tourName;
+    private double tourCost;
     private int flyId;
-    private double priceFly;
+    private double flyprice;
     private int hotelId;
-    private double priceHotel;
+    private double hotelPrice;
+
+
+
 
 
 
@@ -24,17 +27,7 @@ public class Order extends Model {
         super(id);
     }
 
-    public Order(int id, int userId, String userEmail, int toursId, String toursName, int flyId, double priceFly, int hotelId, double priceHotel) {
-        super(id);
-        this.userId = userId;
-        this.userEmail = userEmail;
-        this.toursId = toursId;
-        this.toursName = toursName;
-        this.flyId = flyId;
-        this.priceFly = priceFly;
-        this.hotelId = hotelId;
-        this.priceHotel = priceHotel;
-    }
+
 
     public int getUserId() {
         return userId;
@@ -44,28 +37,36 @@ public class Order extends Model {
         this.userId = userId;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserMail() {
+        return userMail;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserMail(String userMail) {
+        this.userMail = userMail;
     }
 
-    public int getToursId() {
-        return toursId;
+    public int getTourId() {
+        return tourId;
     }
 
-    public void setToursId(int toursId) {
-        this.toursId = toursId;
+    public void setTourId(int tourId) {
+        this.tourId = tourId;
     }
 
-    public String getToursName() {
-        return toursName;
+    public String getTourName() {
+        return tourName;
     }
 
-    public void setToursName(String toursName) {
-        this.toursName = toursName;
+    public void setTourName(String tourName) {
+        this.tourName = tourName;
+    }
+
+    public double getTourCost() {
+        return tourCost;
+    }
+
+    public void setTourCost(double tourCost) {
+        this.tourCost = tourCost;
     }
 
     public int getFlyId() {
@@ -76,14 +77,6 @@ public class Order extends Model {
         this.flyId = flyId;
     }
 
-    public double getPriceFly() {
-        return priceFly;
-    }
-
-    public void setPriceFly(double priceFly) {
-        this.priceFly = priceFly;
-    }
-
     public int getHotelId() {
         return hotelId;
     }
@@ -92,11 +85,19 @@ public class Order extends Model {
         this.hotelId = hotelId;
     }
 
-    public double getPriceHotel() {
-        return priceHotel;
+    public double getHotelPrice() {
+        return hotelPrice;
     }
 
-    public void setPriceHotel(double priceHotel) {
-        this.priceHotel = priceHotel;
+    public void setHotelPrice(double hotelPrice) {
+        this.hotelPrice = hotelPrice;
+    }
+
+    public double getFlyprice() {
+        return flyprice;
+    }
+
+    public void setFlyprice(double flyprice) {
+        this.flyprice = flyprice;
     }
 }
