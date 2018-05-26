@@ -5,12 +5,13 @@ import Util.DBUtil;
 import dao.RolesDAO;
 import model.Roles;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RolesDatabaseDAO implements RolesDAO {
-
+    private DataSource ds;
 
     public RolesDatabaseDAO() {
     }
@@ -18,7 +19,7 @@ public class RolesDatabaseDAO implements RolesDAO {
     public boolean create(Roles model) {
         String sql = "INSERT INTO roles(access) VALUES(?) ";
         boolean rowInsert = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, model.getAccess());
 
@@ -33,7 +34,7 @@ public class RolesDatabaseDAO implements RolesDAO {
     public Roles getById(int id) {
         String sql = "SELECT * FROM roles WHERE id = ?";
         Roles roles = new Roles();
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -51,7 +52,7 @@ public class RolesDatabaseDAO implements RolesDAO {
     public List<Roles> getAll() {
         List<Roles> rolesList = new ArrayList<>();
         String sql = "SELECT * FROM roles";
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -70,7 +71,7 @@ public class RolesDatabaseDAO implements RolesDAO {
     public boolean update(Roles model) {
         String sql = "UPDATE roles SET access=? where id=?";
         boolean rowUpdate = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(2, model.getId());
             preparedStatement.setInt(1, model.getAccess());
@@ -86,7 +87,7 @@ public class RolesDatabaseDAO implements RolesDAO {
     public boolean delete(Roles model) {
         String sql = "DELETE FROM roles WHERE id=?";
         boolean rowDelete = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, model.getId());
             rowDelete = preparedStatement.executeUpdate() > 0;

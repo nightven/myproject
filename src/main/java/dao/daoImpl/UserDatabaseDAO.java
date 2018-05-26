@@ -3,22 +3,27 @@ package dao.daoImpl;
 import Util.DBUtil;
 import dao.UserDAO;
 import model.User;
+
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDatabaseDAO extends DBUtil implements UserDAO {
+public class UserDatabaseDAO  implements UserDAO {
+    DBUtil dbUtil;
 
-    public UserDatabaseDAO() {
-    }
+
+
+
+
 
 
     @Override
     public User getAuthorization(String login, String password) {
         String sql = "SELECT login, password FROM user";
         User user = null;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try(Connection connection = dbUtil.getDataSource().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             user.setLogin(resultSet.getString("login"));
             user.setPassword(resultSet.getString("password"));
@@ -42,7 +47,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
                 " roles_id)" +
                 " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         boolean rowInserted = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertUser)) {
             preparedStatement.setString(1, model.getLogin());
             preparedStatement.setString(2, model.getName());
@@ -63,7 +68,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
     public User getById(int id) {
         String sql = "SELECT * FROM user WHERE user_id =?";
         User user = new User();
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -90,7 +95,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
 
         String sql = "SELECT * FROM user";
 
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
@@ -125,7 +130,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
                 " roles_id = ?" +
                 " WHERE user_id = ?";
         boolean rowUpdate = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(8, model.getId());
             preparedStatement.setString(1, model.getLogin());
@@ -147,7 +152,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
     public boolean delete(User model) {
                 String sql = "DELETE FROM fly where fly_id =?";
         boolean rowDelete = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, model.getId());
             rowDelete = preparedStatement.executeUpdate() > 0;
@@ -163,7 +168,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
         String sql = "SELECT u.user_id, u.login, u.name, u.lastname, u.email, u.password," +
                 " u.create_date, u.user_dob, u.roles_id" +
                 " FROM `order` o JOIN user u on o.user_id = u.user_id WHERE o.id =?";
-        try(Connection connection = DBUtil.getDataSource().getConnection();
+        try(Connection connection = dbUtil.getDataSource().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -205,7 +210,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
     public boolean updateRoles(int userID, int rolesID) {
         String sql = "UPDATE user SET roles_id = ? where user_id = ?";
         boolean rowUpdateRoles = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setInt(1,userID);
             preparedStatement.setInt(2,rolesID);
@@ -220,7 +225,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
     public boolean updateUserDob(int userID, Date userBirth) {
         String sql = "UPDATE user SET user_dob=? WHERE user_id = ?";
         boolean rowUpdateDob = false;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
+        try(Connection connection = dbUtil.getDataSource().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setDate(1, userBirth);
             preparedStatement.setInt(2, userID);
@@ -243,7 +248,7 @@ public class UserDatabaseDAO extends DBUtil implements UserDAO {
 
     private boolean updateUserAttribute(int userId, String attribute, String sql) {
         boolean rowUpdate = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, attribute);

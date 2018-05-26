@@ -6,6 +6,7 @@ import dao.FlyDAO;
 import model.Fly;
 
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class FlyDatabaseDAO implements FlyDAO {
     public FlyDatabaseDAO() {
 
     }
-
+    private DataSource ds;
 
     public boolean create(Fly model, String inCity, String fromCity) {
         String sql = "INSERT  INTO fly(" +
@@ -32,7 +33,7 @@ public class FlyDatabaseDAO implements FlyDAO {
                 "(SELECT id from country WHERE city_name = ?),?," +
                 " (SELECT id FROM country WHERE city_name = ?), ?)";
         boolean rowInsert = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, model.getAir_company());
             preparedStatement.setDate(2, model.getDate());
@@ -53,7 +54,7 @@ public class FlyDatabaseDAO implements FlyDAO {
     public Fly getFlyById(int id) {
         String sql = "SELECT fly_id, air_company, fly_date, price, in_city_name, from_city_name FROM fly WHERE fly_id =?";
         Fly fly = null;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -73,7 +74,7 @@ public class FlyDatabaseDAO implements FlyDAO {
         List<Fly> flyList = new ArrayList<>();
         String sql = "SELECT fly_id, air_company, fly_date, price, in_city_name, from_city_name FROM fly";
 
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -98,7 +99,7 @@ public class FlyDatabaseDAO implements FlyDAO {
                 "from_city_name =?" +
                 "WHERE  fly_id = ?";
         boolean rowUpdate = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(8, model.getId());
             preparedStatement.setString(1, model.getAir_company());
@@ -120,7 +121,7 @@ public class FlyDatabaseDAO implements FlyDAO {
     public boolean delete(int flyId) {
         String sql = "DELETE FROM fly WHERE fly_id= ?";
         boolean rowDelete = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = ds.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, flyId);
             rowDelete = preparedStatement.executeUpdate() > 0;
@@ -141,7 +142,7 @@ public class FlyDatabaseDAO implements FlyDAO {
                 "in_city_name, " +
                 "from_city_name" +
                 " FROM fly WHERE fly_date >= ? AND fly_date <= ?";
-        try(Connection connection =DBUtil.getDataSource().getConnection();
+        try(Connection connection =ds.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
@@ -157,7 +158,7 @@ public class FlyDatabaseDAO implements FlyDAO {
     public boolean setOrderFly(int orderID, int flyId) {
         String sql = "INSERT INTO fly_has_order SET fly_id = ?, Order_id = ?";
         boolean rowSetOrderFly = false;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
+        try(Connection connection = ds.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1,flyId);
             preparedStatement.setInt(2,orderID);
@@ -173,7 +174,7 @@ public class FlyDatabaseDAO implements FlyDAO {
     public boolean deleteOdrerFly(int orderId) {
         String sql = "DELETE FROM fly_has_order WHERE Order_id = ?";
         boolean rowDeleteOrderFly = false;
-        try(Connection connection =DBUtil.getDataSource().getConnection();
+        try(Connection connection =ds.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, orderId);
 
