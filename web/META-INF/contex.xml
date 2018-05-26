@@ -40,19 +40,14 @@
 
 <!-- url: The JDBC connection url for connecting to your MySQL database.
      -->
-<Context reloadable="true" privileged="true">
-    <Resource name="connpool"
+<Context>
+    <Resource name="jdbc/db_travel"
               auth="Container"
               type="javax.sql.DataSource"
-              validationQuery="SELECT 1"
-              validationsInterval="30000"
-              maxActive="100"
-              maxIdle="10"
-              maxWait="10000"
-              initialSize="10"
-              jmxEnabled="true"
               username="root"
               password="84548454"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/db_travel"/>
+              url="jdbc:mysql://localhost:3306/project"
+              maxActive="15"
+              maxIdle="3"/>
 </Context>
