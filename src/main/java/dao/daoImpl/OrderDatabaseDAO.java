@@ -5,6 +5,7 @@ import Util.DBUtil;
 import dao.OrderDAO;
 import model.Order;
 
+import javax.sql.DataSource;
 import java.lang.ref.PhantomReference;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,14 +18,14 @@ public class OrderDatabaseDAO implements OrderDAO {
     public OrderDatabaseDAO() {
 
     }
-
+    private DataSource ds;
 
     @Override
     public boolean create(int userId) {
         String sql = "INSERT INTO `order`( user_id) values (?)";
         boolean rowCreate = false;
         int lastId = 0;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
+        try(Connection connection = ds.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, userId);
            rowCreate = preparedStatement.executeUpdate() > 0;
@@ -50,7 +51,7 @@ public class OrderDatabaseDAO implements OrderDAO {
                 "WHERE o.id =?\n" +
                 "GROUP BY o.id";
         Order order = null;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
+        try(Connection connection = ds.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
                 order.setId(resultSet.getInt("id"));
@@ -81,7 +82,7 @@ public class OrderDatabaseDAO implements OrderDAO {
                 "LEFT JOIN fly_has_order fo on o.id = fo.Order_id\n" +
                 "LEFT JOIN fly f ON fo.fly_id = f.fly_id\n" +
                 "GROUP BY o.id";
-        try(Connection connection =DBUtil.getDataSource().getConnection();
+        try(Connection connection =ds.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
@@ -118,7 +119,7 @@ public class OrderDatabaseDAO implements OrderDAO {
                 "LEFT JOIN hotel h ON h.hotel_id =ho.hotel_hotel_id\n" +
                 "WHERE o.user_id =?\n" +
                 "GROUP BY o.id";
-            try(Connection connection = DBUtil.getDataSource().getConnection();
+            try(Connection connection = ds.getConnection();
             PreparedStatement preparedStatement =connection.prepareStatement(sql)) {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
@@ -145,7 +146,7 @@ public class OrderDatabaseDAO implements OrderDAO {
     public boolean deleteOrder(int orderId) {
         String sql ="DELETE FROM `order` WHERE id =?";
         boolean rowDeleteOrder = false;
-        try(Connection connection = DBUtil.getDataSource().getConnection();
+        try(Connection connection = ds.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, orderId);
 
@@ -155,8 +156,5 @@ public class OrderDatabaseDAO implements OrderDAO {
         }
         return rowDeleteOrder;
     }
-    public Order getOrderFromDB(ResultSet rs){
 
-        return new Order();
-    }
 }

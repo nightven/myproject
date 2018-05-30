@@ -5,6 +5,7 @@ import Util.DBUtil;
 import dao.HotelDAO;
 import model.Hotel;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +13,7 @@ import java.util.List;
 
 
 public class HotelDatabaseDAO implements HotelDAO {
-
+    DBUtil dbUtil = new DBUtil();
 
     public HotelDatabaseDAO() {
     }
@@ -29,7 +30,7 @@ public class HotelDatabaseDAO implements HotelDAO {
                 " country_city_name)" +
                 " VALUES (?,?,?,?,?,?,?)";
         boolean rowInsert = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection() ;
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, model.getHotelName());
             preparedStatement.setString(2, model.getHoteladress());
@@ -51,7 +52,7 @@ public class HotelDatabaseDAO implements HotelDAO {
     public Hotel getById(int id) {
         String sql = "SELECT * FROM hotel WHERE hotel_id =?";
         Hotel hotel = null;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -70,7 +71,7 @@ public class HotelDatabaseDAO implements HotelDAO {
     public List<Hotel> getAll() {
         List<Hotel> hotelList = new ArrayList<>();
         String sql = "SELECT * FROM hotel";
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -95,7 +96,7 @@ public class HotelDatabaseDAO implements HotelDAO {
                 " country_city_name = ? " +
                 "WHERE hotel_id = ?";
         boolean rowUpdate = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(8, model.getId());
             preparedStatement.setString(1, model.getHotelName());
@@ -118,7 +119,7 @@ public class HotelDatabaseDAO implements HotelDAO {
     public boolean delete(Hotel model) {
         String sql = "DELETE FROM hotel WHERE fly_id =?";
         boolean rowDelete = false;
-        try (Connection connection = DBUtil.getDataSource().getConnection();
+        try (Connection connection = dbUtil.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, model.getId());
 
@@ -134,7 +135,7 @@ public class HotelDatabaseDAO implements HotelDAO {
         List<Hotel> hotelsList = new ArrayList<>();
         String sql= "SELECT h.hotel_id, h.hotel_name, h.hotel_adress, h.country_id, h.country_city_name" +
                 " FROM order o JOIN hotel h ON o.id= h.hotel_id where o.id =?";
-        try(Connection connection = DBUtil.getDataSource().getConnection();
+        try(Connection connection =dbUtil.getDataSource().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -148,7 +149,7 @@ public class HotelDatabaseDAO implements HotelDAO {
     }
 
         //Util method
-    private static Hotel getHotelFromDb(ResultSet rs) throws SQLException {
+    public static Hotel getHotelFromDb(ResultSet rs) throws SQLException {
         return new Hotel(rs.getInt("hotel_id"), rs.getString("hotel_name"),
                 rs.getString("hotel_adress"),rs.getDouble("price"),
                 rs.getDate("date_occupancy"), rs.getDate("hotel_eviction"),

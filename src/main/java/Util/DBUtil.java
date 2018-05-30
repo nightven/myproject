@@ -5,10 +5,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-
 public class DBUtil {
     private static DataSource dataSource;
-    private static String JNDI_LOOKUP_SERVICE = "java:comp/env";
+    private static String JNDI_LOOKUP_SERVICE = "java:comp/env/jdbc/db_travel";
 
     static {
         try {
@@ -28,5 +27,8 @@ public class DBUtil {
     public static DataSource getDataSource() {
         return dataSource;
     }
+
+
+
 
 }

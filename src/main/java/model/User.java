@@ -41,6 +41,10 @@ public class User extends Model {
         this.roles = roles;
     }
 
+    public User(String login, String name, String lastname, String email, String password, Date userDob, int rolesId) {
+
+    }
+
     public String getLogin() {
         return login;
     }
